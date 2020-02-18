@@ -1,9 +1,12 @@
-FROM ruby:2.5
-MAINTAINER Samuel Cochran <sj26@sj26.com>
+FROM ruby:2-alpine
 
-ARG VERSION=0.6.5
+ARG VERSION=0.7.1
 
-RUN gem install mailcatcher -v $VERSION
+RUN apk add --no-cache sqlite-dev
+
+RUN apk add --no-cache --virtual .build-deps alpine-sdk \
+  && gem install mailcatcher -v $VERSION \
+  && apk del .build-deps
 
 EXPOSE 1025 1080
 
